@@ -1,0 +1,40 @@
+%read .csv
+Gcsv = readtable('Datos_G_IEEE33.csv');
+Dcsv = readtable('Datos_D_IEEE33.csv');
+
+%SS gain matrix
+G = Gcsv{:,:};
+D = Dcsv{:,:};
+
+%Seleccion de CVs y MVs
+CVs = [14 18 21 25 30 33];
+
+Gs = G(CVs,:);
+Ds = D(CVs,:);
+
+
+%Define component model selection
+structure_D1 = eye(length(CVs));
+
+%Sparse 1 struc
+ss1_col = [1 2 2 6];
+ss1_rows = [2 1 3 6];
+idx_ss1 = sub2ind(size(Gs),ss1_rows,ss1_col);
+
+structure_SS1 = structure_D1;
+structure_SS1(idx_ss1) = 1;
+
+% SS gain model matrix
+Gvs_D1 = Gs.*structure_D1;
+Gvs_SS1 = Gs.*structure_SS1;
+
+
+% % Testeo de estabilidad Garcia and Morari
+% GGG = Gs*(Gvs^-1);
+% autoval = eig(GGG);
+% r_autoval = real(autoval);
+% testeo = (r_autoval>0);
+% det(Gvs)
+    
+% NLE    
+[NLE_sp,NLE_d,NLE] = NLE_calc(Gs,Gvs_D1)

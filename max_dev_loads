@@ -1,0 +1,12 @@
+%
+clc
+clear all
+close all
+%%
+load dv.mat
+
+% Suma de desviaciones cuadráticas sobre salidas
+dv_dist_loads = dv_dist(:,7:end);
+sum_dev = sum(abs(dv_dist_loads),1)
+
+[max_devs,ind_dev] = sort(sum_dev,'descend')

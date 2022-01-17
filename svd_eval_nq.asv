@@ -1,0 +1,68 @@
+ % COMENTARIOS GENERALES
+%%%%%%%%%%%%%%%%%%%%%%%
+% The initial population is generated randomly by default
+%Two options 'ParetoFraction' and 'DistanceFcn' are used to control the elitism. 
+%The Pareto fraction option limits the number of individuals on the Pareto front (elite members) 
+%and the distance function helps to maintain diversity on a front by favoring individuals that are relatively far away on the front.
+
+clear;
+close all;
+clc;
+%%
+
+% PARAMETROS GENERALES
+%%%%%%%%%%%%%%%%%%%%%%
+
+%read .csv
+% Gcsv = readtable('Datos_G_IEEE33_0-01.csv');
+% Dcsv = readtable('Datos_De_IEEE33_0-01.csv');
+
+%SS gain matrix
+% dist_load = [1 2 7 13 21 23 29 31]; % 1,2 + max deviation por rama
+% dist_load = [29 31 13 7 6 30 17 28 24 23]; %10 most dev
+% dist_load = [1 2]; % 5 most dev
+
+% dist_col = [1:6,dist_load+6];
+% dist_col = [dist_load+6];
+% G = Gcsv{:,:};
+% % D = Dcsv{:,dist_col};
+% D = Dcsv{:,:};
+
+load SS_matrix_matpower_GD_dy0-01.mat
+G = Gn;
+D = Dn;
+
+%Seleccion de CVs y MVs
+CVs_nq{1} = [14];
+MVs_nq{1} = [1];
+
+CVs_nq{2} = [17 33];
+MVs_nq{2} = [2 6];
+
+CVs_nq{3} = [14 18 33];
+MVs_nq{3} = [1 2 6];
+
+CVs_nq{4} = [14 18 25 33];
+MVs_nq{4} = [1 2 4 6];
+
+CVs_nq{5} = [14 18 22 25 33];
+MVs_nq{5} = [1 2 3 4 6];
+
+CVs_nq{6} = [14 18 22 25 30 33];
+MVs_nq{6} = [1 2 3 4 5 6];
+
+for i=1:6
+    Gs = G(CVs_nq{i},MVs_nq{i});
+    Gvs = 
+% 57.9502 59.710 57.9533
+Gs = G(CVs,:);
+Ds = D(CVs,:);
+s_sp_1 =  (Gs^-1)*eye(q0);
+structure = [1 0 0 0 0 0;
+             0 1 0 0 0 0;
+             0 0 1 0 0 0;
+             0 0 0 1 0 0;
+             0 0 0 0 1 0;
+             0 0 0 0 0 1];
+         
+Gvs = Gs.*structure;

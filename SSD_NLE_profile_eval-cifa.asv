@@ -1,0 +1,36 @@
+% SSD_NLE_profile
+
+clear;
+close all;
+clc;
+
+%%
+load  SS_matrix_matpower_GD_dy0-01.mat
+G = Gn;
+D = Dn;
+
+q0 = 6; %grados de libertad seleccionados
+qfull = q0^2-q0; %matriz completa menos el descentralizado base
+
+for qi = 1:qfull
+    [NLE_sp(qi),NLE_d(qi),SSD_sp(qi),SSD_d(qi),structure(:,:,qi)] = SSD_NLE_val(G,D,qi);
+end
+
+save('SSD_NLE_opt_profile_D_dy0-01')
+%%
+% load SSD_NLE_opt_profile_D_dy0-03
+ind = [1:qfull];
+
+NLE = NLE_sp + NLE_d;
+SSD = SSD_sp + SSD_d;
+obj = NLE + SSD;
+
+figure
+plot(ind,NLE,'-*'), grid on, hold on
+plot(ind,SSD,'-o'),
+plot(ind,obj,'-x')
+legend('NLE','SSD','obj')
+ylabel('value')
+xlabel('ad comp')
+title('De dy=0.03')
+
