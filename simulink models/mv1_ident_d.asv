@@ -1,0 +1,134 @@
+% Mv1: Qdg1_ref(B14)
+P_dgf = 300*ones(1,6);
+tPdg = 0.5*ones(1,6);
+
+Q_dgf = zeros(1,6);
+Q_dgf(1) = 400;  %kVAr
+tQdg = 0.5*ones(1,6);
+
+%simulate
+sim('IEEE33BusTestSystem_DG_Ident')
+%%
+for i=1:length(CVs_sel)
+    cv_i = CVs_sel(i);
+% Output identification
+Ts = tout_d(2)-tout_d(1);   
+n_step = 0.5/Ts;
+tt = tout_d(n_step+1:end)-tout_d(n_step+1);
+
+% v_i
+dv_vin_aux = (VSimMat_d(:,cv_i) - VSimMat_d(10,cv_i))/dy_n;
+dv_vin =  dv_vin_aux(n_step+1:end);
+%g11 = K / (tau*s + 1) // dQdg1_ref = 100/500 = 0.2 
+kp = (VSimMat_d(end,cv_i) - VSimMat_d(10,cv_i))/(Q_dgf(1) - Q_dg0(1));
+kpn = kp/dk_n;
+Tp = 0.05;
+
+num = [kpn];
+den = [Tp 1];
+sys = tf(num,den);
+g1i(i = sys;
+v_iden = (Q_dgf(1)/du_n)*step(sys,tt);% dQdg1_ref = 100/500 
+
+% 
+figure
+plot(tt,dv_vin,tt,v_iden), grid on
+legend('y','y_{iden}')
+xlabel('time (s)')
+ylabel('y')
+title(['CV: v_' num2str(cv_i)])
+end
+%%
+% v_17
+dv_v17n_aux = (VSimMat_d(:,17) - VSimMat_d(10,17))/dy_n;
+dv_v17n =  dv_v17n_aux(n_step+1:end);
+%g11 = K / (tau*s + 1) // dQdg1_ref = 100/500 = 0.2 
+kp = (VSimMat_d(end,17) - VSimMat_d(10,17))/(Q_dgf(1) - Q_dg0(1));
+kpn = kp/dk_n;
+Tp = 0.05;
+
+num = [kpn];
+den = [Tp 1];
+sys = tf(num,den);
+g21 = sys;
+v_iden = 0.2*step(sys,tt);% dQdg1_ref = 100/500 
+
+figure
+plot(tt,dv_v17n,tt,v_iden), grid on
+legend('y','y_{iden}')
+xlabel('time (s)')
+ylabel('y')
+%%
+% v_21
+dv_v21n_aux = (VSimMat_d(:,21) - VSimMat_d(10,21))/dy_n;
+dv_v21n =  dv_v21n_aux(n_step+1:end);
+%g11 = K / (tau*s + 1) // dQdg1_ref = 100/500 = 0.2 
+kp = (VSimMat_d(end,21) - VSimMat_d(10,21))/(Q_dgf(1) - Q_dg0(1));
+kpn = kp/dk_n;
+Tp = 0.05;
+
+num = [kpn];
+den = [Tp 1];
+sys = tf(num,den);
+g31 = sys;
+v_iden = 0.2*step(sys,tt);% dQdg1_ref = 100/500 
+
+% v_25
+dv_v25n_aux = (VSimMat_d(:,25) - VSimMat_d(10,25))/dy_n;
+dv_v25n =  dv_v25n_aux(n_step+1:end);
+%g11 = K / (tau*s + 1) // dQdg1_ref = 100/500 = 0.2 
+kp = (VSimMat_d(end,25) - VSimMat_d(10,25))/(Q_dgf(1) - Q_dg0(1));
+kpn = kp/dk_n;
+Tp = 0.05;
+
+num = [kpn];
+den = [Tp 1];
+sys = tf(num,den);
+g41 = sys;
+v_iden = 0.2*step(sys,tt);% dQdg1_ref = 100/500 
+
+% figure
+% plot(tt,dv_v25n,tt,v_iden), grid on
+% legend('y','y_{iden}')
+% xlabel('time (s)')
+% ylabel('y')
+
+% v_30
+dv_v30n_aux = (VSimMat_d(:,30) - VSimMat_d(10,30))/dy_n;
+dv_v30n =  dv_v30n_aux(n_step+1:end);
+%g11 = K / (tau*s + 1) // dQdg1_ref = 100/500 = 0.2 
+kp = (VSimMat_d(end,30) - VSimMat_d(10,30))/(Q_dgf(1) - Q_dg0(1));
+kpn = kp/dk_n;
+Tp = 0.05;
+
+num = [kpn];
+den = [Tp 1];
+sys = tf(num,den);
+g51 = sys;
+v_iden = 0.2*step(sys,tt);% dQdg1_ref = 100/500 
+
+% figure
+% plot(tt,dv_v30n,tt,v_iden), grid on
+% legend('y','y_{iden}')
+% xlabel('time (s)')
+% ylabel('y')
+% 
+% v_33
+dv_v33n_aux = (VSimMat_d(:,33) - VSimMat_d(10,33))/dy_n;
+dv_v33n =  dv_v33n_aux(n_step+1:end);
+%g11 = K / (tau*s + 1) // dQdg1_ref = 100/500 = 0.2 
+kp = (VSimMat_d(end,33) - VSimMat_d(10,33))/(Q_dgf(1) - Q_dg0(1));
+kpn = kp/dk_n;
+Tp = 0.05;
+
+num = [kpn];
+den = [Tp 1];
+sys = tf(num,den);
+g61 = sys;
+v_iden = 0.2*step(sys,tt);% dQdg1_ref = 100/500 
+
+% figure
+% plot(tt,dv_v33n,tt,v_iden), grid on
+% legend('y','y_{iden}')
+% xlabel('time (s)')
+% ylabel('y')
